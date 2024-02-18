@@ -1,0 +1,22 @@
+### Получение всех проектов
+GET http://localhost:8087/api/v1/setting
+
+### response example
+
+HTTP/1.1 200
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 18 Feb 2024 14:25:21 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+
+{
+"name": "Kathrin",
+"login": "KathrinBeaver",
+"projectsList": [
+"ТП-2022",
+"ТП-2022",
+"ОПППС"
+],
+"apikey": "4bb0d185-5de7-4dc3-b058-a426c9dea495"
+}

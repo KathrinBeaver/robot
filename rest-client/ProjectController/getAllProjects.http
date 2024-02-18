@@ -1,0 +1,21 @@
+### Получение всех проектов
+GET http://localhost:8087/api/v1/project
+
+
+### Добавление нового проекта
+POST http://localhost:8087/api/v1/project
+Content-Type: application/json
+
+{
+"id": 1,
+"name": "Test project 1"
+}
+
+### Обновление проекта
+PUT http://localhost:8087/api/v1/project
+Content-Type: application/json
+
+{
+"id": 2,
+"name": "22222"
+}
