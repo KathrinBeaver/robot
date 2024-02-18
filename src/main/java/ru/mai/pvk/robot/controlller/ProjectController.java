@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.mai.pvk.robot.error.exception.ProjectProccessException;
 import ru.mai.pvk.robot.model.dto.ProjectDto;
-import ru.mai.pvk.robot.model.dto.SettingDto;
 import ru.mai.pvk.robot.service.ProjectService;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
-    @GetMapping(value = "")
+    @GetMapping()
     public List<ProjectDto> getAllProjects () {
         return projectService.getProjects();
     }

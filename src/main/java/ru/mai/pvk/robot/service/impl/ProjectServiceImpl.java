@@ -3,9 +3,7 @@ package ru.mai.pvk.robot.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.model.dto.ProjectDto;
-import ru.mai.pvk.robot.model.dto.SettingDto;
 import ru.mai.pvk.robot.service.ProjectService;
-import ru.mai.pvk.robot.service.SettingService;
 
 import java.util.ArrayList;
 import java.util.List;

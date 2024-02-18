@@ -1,7 +1,6 @@
 package ru.mai.pvk.robot.service;
 
 import ru.mai.pvk.robot.model.dto.ProjectDto;
-import ru.mai.pvk.robot.model.dto.SettingDto;
 
 import java.util.List;
 

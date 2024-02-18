@@ -16,6 +16,6 @@ PUT http://localhost:8087/api/v1/project
 Content-Type: application/json
 
 {
-"id": 2,
+"id": 0,
 "name": "22222"
 }
