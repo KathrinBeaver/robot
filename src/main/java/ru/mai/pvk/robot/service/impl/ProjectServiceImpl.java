@@ -12,25 +12,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
-    private List<ProjectDto> projectsList = new ArrayList<>();
+    private final List<ProjectDto> projectList = new ArrayList<>();
 
     @Override
     public List<ProjectDto> getProjects() {
-        return projectsList;
+        return projectList;
     }
 
     @Override
     public ProjectDto getProjectbyId(Integer id) {
-        return projectsList.get(id);
+        return projectList.get(id);
     }
 
     @Override
     public void updateProject(ProjectDto projectDto) {
-        projectsList.set(projectDto.getId(), projectDto);
+        for (int i = 0; i < projectList.size(); i++) {
+            if (projectList.get(i).getProjectId().equals(projectDto.getProjectId())) {
+                projectList.set(i, projectDto);
+                break;
+            }
+        }
     }
 
     @Override
     public void addProject(ProjectDto projectDto) {
-        projectsList.add(projectDto);
+        projectList.add(projectDto);
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 @Value(staticConstructor = "of")
 public final class ProjectDto {
 
-	private final Integer id;
-    private final String name;
+	private final String projectId;
+    private final String projectName;
 
 }

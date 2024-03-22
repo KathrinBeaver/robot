@@ -1,0 +1,188 @@
+
+/* Пока без аутентификации-авторизации */
+/* Сейчас считаем, что userId = 42 фронт уже "знает" */
+/*Получение настроек подключения пользователя*/
+GET 
+/api/v1/settings/<userId>
+
+Response:
+{
+	"name": "Ivan Petrov",
+	"url": "https://hostedredmine.com",
+	"apikey": "string",
+	"projectList": [
+		{"projectName":"project1","projectId": "project1Id"},
+		{"projectName":"project2","projectId": "project2Id"},
+		{"projectName":"project3","projectId": "project3Id"},
+		]
+}
+
+/*Получение настроек итераций проекта*/
+GET 
+/api/v1/projectIterations/<projectName>
+{
+	"projectName": "project1",
+	"iterationsList": ["Iteration1","Iteration2","Iteration3"]
+}
+
+/*Получить настройки проверки*/
+GET
+/api/v1/robotSettings
+{
+    "showErrorResponse": true,
+    "checkAllIterations": false,
+    "needLint": true,
+    "assingTasksToStudent": true
+}
+
+/*Задать настройки проверки*/
+PUT
+/api/v1/robotSettings
+body:
+{
+    "showErrorResponse": true,
+    "checkAllIterations": false,
+    "needLint": true,
+    "assingTasksToStudent": true
+}
+
+/*Начать проверку всех задач*/
+POST
+/api/v1/startFullCheck
+{
+    "projectId": "project1Id",
+    "iteration": "iteration",
+    "checkAllIterations": false,
+    "showErrorResponse": true,
+    "needLint": true,
+    "assingTasksToStudent": true
+}
+/*Начать проверку одной задачи*/
+POST
+/api/v1/startCheckSingleIssue
+{
+    "taskId": "12345",
+    "showErrorResponse": true,    
+    "checkAllIterations": false,
+    "needLint": true,
+    "assingTasksToStudent": true
+}
+
+
+/*получить списки студентов выбранного проекта по projectId*/
+GET
+/api/v1/getStudentsList/<projectId>
+
+Response:
+{
+    "studentList": [
+        {"studentName": "Иванов", "studentId": "studentId1"},
+        {"studentName": "Пиванов", "studentId": "studentId2"},
+        {"studentName": "Сидоров", "studentId": "studentId3"}
+    ],
+    "taskList": [
+        {"taskName": "h", "taskId": "taskId1"},
+        {"taskName": "c", "taskId": "taskId2"},
+        {"taskName": "o", "taskId": "taskId3"},
+        {"taskName": "я", "taskId": "taskId4"}
+    ],
+}
+
+/* Получить готовые к выдаче задачи в projectName и iterationId */
+GET
+/api/v1/getStudentsList/<projectName>/<iterationId>
+
+Response:
+{
+    "taskList": [
+        {"taskName": "h", "taskId": "taskId1"},
+        {"taskName": "c", "taskId": "taskId2"},
+        {"taskName": "o", "taskId": "taskId3"},
+        {"taskName": "я", "taskId": "taskId4"}
+    ],
+}
+
+
+
+/*назначить выделенное или раскопировать всё всем - создать и назначить каждую задачу на каждого из списка студентов*/
+/api/v1/assingTasksToStudent/<IterationId>
+POST
+{
+    "studentIdList":["studentId1","studentId2","studentId3"],
+    "taskIdList": ["taskId2","taskId3","taskId4"]
+}
+
+/*Получение тем (я как понимаю это не зависит от преподавателя)*/
+GET
+/api/v1/getAllTopics
+Response:
+{
+    "listOfThemes": [
+        {"themeName": "math", "themeId": "1"},
+        {"themeName": "c", "themeId": "2"},
+        {"themeName": "o", "themeId": "3"}
+    ]
+}
+
+/*Получение задач (в зависимости от темы)*/
+GET
+/api/v1/getTasks/<themeId>
+Response:
+{
+    "theme":{"themeName": "math", "themeId": "1"},
+    "listOfTasks": [
+        {"taskName": "Sum1", "taskId": "1", "taskDescription": "Sum all digits..." },
+        {"taskName": "c", "taskId": "2", "taskDescription": "Round all digits..."},
+        {"taskName": "o", "taskId": "3", "taskDescription": "Do something useful...",}
+    ]
+}
+
+/*Получение теста (в зависимости от задачи)*/
+GET
+Response:
+/api/v1/getTests/<taskId>
+{
+    "listOfTests": [
+        {"testId": "testId1", "inputData": "1 1 1", "outPutData": "3"},
+        {"testId": "testId2", "inputData": "1 2 3"},"outPutData": "1 2 3"},
+        {"testId": "testId3", "inputData": "1 \n 1", "outPutData": ""}
+    ]
+}
+
+/* добавление новой задачи */
+PUT
+/api/v1/addTask
+Request:
+{
+    "themeId": "1",
+    "taskName": "h",
+    "taskDescription": "asd"
+    "listOfTests": [
+        {"testId": "testId1", "inputData": "1 1 1", "outPutData": "3"},
+        {"testId": "testId2", "inputData": "1 2 3"},"outPutData": "1 2 3"},
+        {"testId": "testId3", "inputData": "1 \n 1", "outPutData": ""}
+    ]
+}
+Response:
+{
+	"taskId": "taskId1",
+}
+
+/*добавление нового теста*/
+PUT
+/api/v1/addTest/<taskId>
+Request:
+{
+    "taskId": "1",
+    "inputData": "h",
+    "outPutData": "asd"
+}
+
+/*добавление известной задачи к себе в итерацию теста*/
+POST
+/api/v1/addIssue
+Request:
+{
+    "taskId": "taskId1",
+    "iterationId": "IterationId",
+}
