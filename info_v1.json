@@ -48,24 +48,32 @@ body:
 
 /*Начать проверку всех задач*/
 POST
-/api/v1/startFullCheck
+/api/v1/taskChecker/startFullCheck
 {
     "projectId": "project1Id",
     "iteration": "iteration",
-    "checkAllIterations": false,
-    "showErrorResponse": true,
-    "needLint": true,
-    "assingTasksToStudent": true
+    "settings":
+    {	
+		"checkAllIterations": false,
+		"showErrorResponse": true,
+		"needLint": true,
+		"assingTasksToStudent": true
+    }
 }
+
 /*Начать проверку одной задачи*/
 POST
-/api/v1/startCheckSingleIssue
+/api/v1/taskChecker/startCheckSingleIssue
 {
     "taskId": "12345",
-    "showErrorResponse": true,    
-    "checkAllIterations": false,
-    "needLint": true,
-    "assingTasksToStudent": true
+    "projectId": "project1Id",
+    "settings":
+    {	
+		"checkAllIterations": false,
+		"showErrorResponse": true,
+		"needLint": true,
+		"assingTasksToStudent": true
+    }
 }
 
 

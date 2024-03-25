@@ -29,7 +29,7 @@ public class CheckerSettingsController {
             throw new ProjectProccessException();
         }
 
-        return "Проект успешно обновлен";
+        return "200 - настройки проверки применены";
     }
 
 }
