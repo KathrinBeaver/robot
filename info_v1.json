@@ -17,12 +17,12 @@ Response:
 		]
 }
 
-/*Получение настроек итераций проекта*/
+/*Получение итераций проекта*/
 GET 
-/api/v1/projectIterations/<projectName>
+/api/v1/project/iterations/<projectId>
 {
-	"projectName": "project1",
-	"iterationsList": ["Iteration1","Iteration2","Iteration3"]
+	"projectId": "projectId1",
+	"projectIterations": ["Iteration1","Iteration2","Iteration3"]
 }
 
 /*Получить настройки проверки*/
@@ -32,7 +32,7 @@ GET
     "showErrorResponse": true,
     "checkAllIterations": false,
     "needLint": true,
-    "assingTasksToStudent": true
+    "assignTasksToStudent": true
 }
 
 /*Задать настройки проверки*/
@@ -43,7 +43,7 @@ body:
     "showErrorResponse": true,
     "checkAllIterations": false,
     "needLint": true,
-    "assingTasksToStudent": true
+    "assignTasksToStudent": true
 }
 
 /*Начать проверку всех задач*/

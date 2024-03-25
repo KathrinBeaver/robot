@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.mai.pvk.robot.error.exception.ProjectProccessException;
 import ru.mai.pvk.robot.model.dto.ProjectDto;
+import ru.mai.pvk.robot.model.dto.ProjectIterationsDto;
 import ru.mai.pvk.robot.service.ProjectService;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class ProjectController {
     @GetMapping()
     public List<ProjectDto> getAllProjects () {
         return projectService.getProjects();
+    }
+
+    @GetMapping(value = "/iterations/{projectId}")
+    public ProjectIterationsDto getIterations(@PathVariable("projectId") String projectId) {
+        return  projectService.getProjectIterations(projectId);
     }
 
     @GetMapping(value = "/{id}")
@@ -33,7 +39,7 @@ public class ProjectController {
             throw new ProjectProccessException();
         }
 
-        return "Проект успешно обновлен";
+        return "Настройки обновлены";
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")

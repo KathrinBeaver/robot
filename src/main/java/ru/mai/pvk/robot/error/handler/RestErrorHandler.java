@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import ru.mai.pvk.robot.error.ErrorType;
 import ru.mai.pvk.robot.error.RestExceptionDto;
 import ru.mai.pvk.robot.error.exception.ProjectProccessException;
+import ru.mai.pvk.robot.error.exception.SettingsProccessException;
 import ru.mai.pvk.robot.error.exception.UserProccessException;
 
 
@@ -45,6 +46,14 @@ public class RestErrorHandler {
 		return ResponseEntity
 				.status(HttpStatus.BAD_REQUEST)
 				.body(new RestExceptionDto(ErrorType.USER_ERROR, "User processing error"));
+	}
+
+	@ExceptionHandler(SettingsProccessException.class)
+	protected ResponseEntity<Object> handle(SettingsProccessException ex) {
+		log.error("Exception: {}", ex.getMessage(), ex);
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(new RestExceptionDto(ErrorType.SETTINGS_ERROR, "Some incorrect settings received"));
 	}
 
 	@ExceptionHandler(Exception.class)

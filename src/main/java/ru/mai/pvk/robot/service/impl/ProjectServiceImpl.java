@@ -3,6 +3,7 @@ package ru.mai.pvk.robot.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.model.dto.ProjectDto;
+import ru.mai.pvk.robot.model.dto.ProjectIterationsDto;
 import ru.mai.pvk.robot.service.ProjectService;
 
 import java.util.ArrayList;
@@ -37,5 +38,21 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void addProject(ProjectDto projectDto) {
         projectList.add(projectDto);
+    }
+
+    @Override
+    public ProjectIterationsDto getProjectIterations(String projectId) {
+        List<String> iterations = new ArrayList<>();
+        iterations.add(projectId);
+        iterations.add("Арифметика");
+        iterations.add("Простые циклы");
+        iterations.add("Рекурсия");
+
+        ProjectIterationsDto result = ProjectIterationsDto.of(
+                projectId,
+                iterations
+        );
+
+        return result;
     }
 }
