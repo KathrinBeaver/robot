@@ -6,6 +6,6 @@ import lombok.Value;
 import java.util.List;
 
 @Value(staticConstructor = "of")
-public class TaskListDto {
-    private final List<TaskDto> tasksList;
+public class IssueListDto {
+    private final List<IssueDto> issueList;
 }

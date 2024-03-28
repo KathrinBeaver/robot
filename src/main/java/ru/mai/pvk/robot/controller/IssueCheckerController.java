@@ -6,8 +6,8 @@ import ru.mai.pvk.robot.error.exception.ProjectProccessException;
 import ru.mai.pvk.robot.error.exception.TaskProccessException;
 import ru.mai.pvk.robot.model.dto.StudentListDto;
 import ru.mai.pvk.robot.model.dto.TaskAndStudentListDto;
-import ru.mai.pvk.robot.model.dto.TaskCheckerDto;
-import ru.mai.pvk.robot.model.dto.TaskListDto;
+import ru.mai.pvk.robot.model.dto.IssueCheckerDto;
+import ru.mai.pvk.robot.model.dto.IssueListDto;
 import ru.mai.pvk.robot.service.IssueCheckerService;
 
 @RestController
@@ -20,7 +20,7 @@ public class IssueCheckerController {
     @PostMapping(consumes = "application/json",
             produces = "application/json",
             value = "/startFullCheck")
-    public String startFullCheck(@RequestBody TaskCheckerDto taskCheckerSettings) {
+    public String startFullCheck(@RequestBody IssueCheckerDto taskCheckerSettings) {
         try {
             taskCheckerService.startFullCheck(taskCheckerSettings);
         } catch (Exception e) {
@@ -33,7 +33,7 @@ public class IssueCheckerController {
     @PostMapping(consumes = "application/json",
             produces = "application/json",
             value = "/startCheckSingleIssue")
-    public String startCheckSingleIssue(@RequestBody TaskCheckerDto taskCheckerSettings) {
+    public String startCheckSingleIssue(@RequestBody IssueCheckerDto taskCheckerSettings) {
         try {
             taskCheckerService.startSingleIssueCheck(taskCheckerSettings);
         } catch (Exception e) {
@@ -70,10 +70,10 @@ public class IssueCheckerController {
 
 
     @GetMapping(value = "/getTasksList/{projectId}/{iterationId}")
-    public TaskListDto getTasksList(
+    public IssueListDto getTasksList(
             @PathVariable("projectId") String projectId,
             @PathVariable("iterationId") String iterationId) {
-        TaskListDto tasksList;
+        IssueListDto tasksList;
         try {
             tasksList = taskCheckerService.getTasksList(projectId, iterationId);
         } catch (Exception e) {

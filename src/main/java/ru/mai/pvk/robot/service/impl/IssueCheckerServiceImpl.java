@@ -11,12 +11,12 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class IssueCheckerServiceImpl implements IssueCheckerService {
     @Override
-    public void startSingleIssueCheck(TaskCheckerDto settings) {
+    public void startSingleIssueCheck(IssueCheckerDto settings) {
 
     }
 
     @Override
-    public void startFullCheck(TaskCheckerDto aSettings) {
+    public void startFullCheck(IssueCheckerDto aSettings) {
 
     }
 
@@ -34,14 +34,14 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
     }
 
     @Override
-    public TaskListDto getTasksList(String projectId, String iterationId) {
-        TaskListDto tasks = TaskListDto.of(new ArrayList<>());
-        tasks.getTasksList().add(
-                TaskDto.of("12345", "Шашки"));
-        tasks.getTasksList().add(
-                TaskDto.of("12346", "МКАД"));
-        tasks.getTasksList().add(
-                TaskDto.of("12347", "Последнее слово"));
+    public IssueListDto getTasksList(String projectId, String iterationId) {
+        IssueListDto tasks = IssueListDto.of(new ArrayList<>());
+        tasks.getIssueList().add(
+                IssueDto.of("12345", "Шашки"));
+        tasks.getIssueList().add(
+                IssueDto.of("12346", "МКАД"));
+        tasks.getIssueList().add(
+                IssueDto.of("12347", "Последнее слово"));
 
         return tasks;
     }
