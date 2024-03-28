@@ -173,21 +173,29 @@ Response:
     ]
 }
 
-/*Получение теста (в зависимости от задачи)*/
+/*Получение тестов (в зависимости от задачи)*/
 GET
 Response:
-/api/v1/getTests/<taskId>
+/api/v1/tasks/getTests/<taskId>
 {
-    "listOfTests": [
-        {"testId": "testId1", "inputData": "1 1 1", "outPutData": "3"},
-        {"testId": "testId2", "inputData": "1 2 3"},"outPutData": "1 2 3"},
-        {"testId": "testId3", "inputData": "1 \n 1", "outPutData": ""}
+    "taskId": "1",
+    "taskTests": [
+        {
+            "testId": 1,
+            "inputData": "1 1 1",
+            "outPutData": "3"
+        },
+        {
+            "testId": 2,
+            "inputData": "1 \n 1",
+            "outPutData": "2"
+        }
     ]
 }
 
 /* добавление новой задачи */
 PUT
-/api/v1/addTask
+/api/v1/tasks/addTask
 Request:
 {
     "themeId": "1",

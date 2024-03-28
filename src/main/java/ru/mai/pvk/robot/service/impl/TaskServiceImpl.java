@@ -33,9 +33,18 @@ public class TaskServiceImpl implements TaskService {
                 "Простая арифметика", themeId), new ArrayList<>()
         );
         result.getTasksInTheme().add(TaskDto.of(
-                "МКАД", "12345", "Василий ехал по МКАД со скоростью V. L - Длина МКАДА.", themeId, "mkad"));
+                "МКАД", "12345", "Василий ехал по МКАД со скоростью V. L - Длина МКАДА.", themeId, "mkad", "func=contains"));
         result.getTasksInTheme().add(TaskDto.of(
-                "Складирование ноутбуков", "54321", "Ноутбуки лежат на складе. Лежат себе и лежат.", themeId, "notebooks"));
+                "Складирование ноутбуков", "54321", "Ноутбуки лежат на складе. Лежат себе и лежат.", themeId, "notebooks", ""));
+
+        return result;
+    }
+
+    @Override
+    public TaskTestsDto getTaskTests(String testId) {
+        TaskTestsDto result = TaskTestsDto.of(testId, new ArrayList<>());
+        result.getTaskTests().add(TestDto.of(1, "1 1 1", "3"));
+        result.getTaskTests().add(TestDto.of(2, "1 \n 1", "2"));
 
         return result;
     }

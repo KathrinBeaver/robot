@@ -37,6 +37,15 @@ public class TaskController {
 
         return themeTasks;
     }
+    @GetMapping(value = "/getTests/{taskId}")
+    public TaskTestsDto getTests(@PathVariable String taskId) {
+        TaskTestsDto taskTests;
+        try {
+            taskTests = taskService.getTaskTests(taskId);
+        } catch (Exception e) {
+            throw new TaskProccessException();
+        }
 
-
+        return taskTests;
+    }
 }

@@ -9,5 +9,5 @@ public final class TaskDto {
     private final String taskDescription;
     private final String themeId;
     private final String folderName;
-
+    private final String config;
 }
