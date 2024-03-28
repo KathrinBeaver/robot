@@ -3,15 +3,13 @@ package ru.mai.pvk.robot.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.model.dto.*;
-import ru.mai.pvk.robot.service.RobotSettingsService;
-import ru.mai.pvk.robot.service.TaskCheckerService;
+import ru.mai.pvk.robot.service.IssueCheckerService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TaskCheckerServiceImpl implements TaskCheckerService {
+public class IssueCheckerServiceImpl implements IssueCheckerService {
     @Override
     public void startSingleIssueCheck(TaskCheckerDto settings) {
 

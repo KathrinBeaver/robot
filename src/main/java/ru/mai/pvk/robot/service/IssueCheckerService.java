@@ -5,7 +5,7 @@ import ru.mai.pvk.robot.model.dto.TaskAndStudentListDto;
 import ru.mai.pvk.robot.model.dto.TaskCheckerDto;
 import ru.mai.pvk.robot.model.dto.TaskListDto;
 
-public interface TaskCheckerService {
+public interface IssueCheckerService {
     void startFullCheck(TaskCheckerDto settings);
     void startSingleIssueCheck(TaskCheckerDto settings);
     StudentListDto getStudentsList(String projectId);

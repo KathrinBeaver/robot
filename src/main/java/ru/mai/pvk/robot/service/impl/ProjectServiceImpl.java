@@ -43,7 +43,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectIterationsDto getProjectIterations(String projectId) {
         List<String> iterations = new ArrayList<>();
-        iterations.add(projectId);
         iterations.add("Арифметика");
         iterations.add("Простые циклы");
         iterations.add("Рекурсия");

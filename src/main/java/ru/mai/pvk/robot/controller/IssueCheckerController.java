@@ -8,14 +8,14 @@ import ru.mai.pvk.robot.model.dto.StudentListDto;
 import ru.mai.pvk.robot.model.dto.TaskAndStudentListDto;
 import ru.mai.pvk.robot.model.dto.TaskCheckerDto;
 import ru.mai.pvk.robot.model.dto.TaskListDto;
-import ru.mai.pvk.robot.service.TaskCheckerService;
+import ru.mai.pvk.robot.service.IssueCheckerService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/issueChecker")
 public class IssueCheckerController {
 
-    private final TaskCheckerService taskCheckerService;
+    private final IssueCheckerService taskCheckerService;
 
     @PostMapping(consumes = "application/json",
             produces = "application/json",
