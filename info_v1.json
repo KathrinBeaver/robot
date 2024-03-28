@@ -48,7 +48,7 @@ body:
 
 /*Начать проверку всех задач*/
 POST
-/api/v1/taskChecker/startFullCheck
+/api/v1/issueChecker/startFullCheck
 {
     "projectId": "project1Id",
     "iteration": "iteration",
@@ -63,7 +63,7 @@ POST
 
 /*Начать проверку одной задачи*/
 POST
-/api/v1/taskChecker/startCheckSingleIssue
+/api/v1/issueChecker/startCheckSingleIssue
 {
     "taskId": "12345",
     "projectId": "project1Id",
@@ -79,7 +79,7 @@ POST
 
 /*получить списки студентов выбранного проекта по projectId*/
 GET
-/api/v1/taskChecker/getStudentsList/<projectId>
+/api/v1/issueChecker/getStudentsList/<projectId>
 
 Response:
 {
@@ -101,7 +101,7 @@ Response:
 
 /* Получить готовые к выдаче задачи в projectName и iterationId */
 GET
-/api/v1/taskChecker/getTasksList/<projectId>/<iterationId>
+/api/v1/issueChecker/getTasksList/<projectId>/<iterationId>
 
 Response:
 {
@@ -124,7 +124,7 @@ Response:
 
 
 /*назначить выделенное или раскопировать всё всем - создать и назначить каждую задачу на каждого из списка студентов*/
-/api/v1/taskChecker/assignTasksToStudents/<IterationId>
+/api/v1/issueChecker/assignTasksToStudents/<IterationId>
 POST
 {
     "tasksList" : [{"taskId":"12345", "taskSubject":"Шашки"}],
@@ -136,10 +136,16 @@ GET
 /api/v1/tasks/getAllTopics
 Response:
 {
-    "listOfThemes": [
-        {"themeName": "math", "themeId": "1"},
-        {"themeName": "c", "themeId": "2"},
-        {"themeName": "o", "themeId": "3"}
+    "themeListList": [
+        {
+            "themeName": "Простая арифметика", "themeId": "1"
+        },
+        {
+            "themeName": "Рекурсия", "themeId": "2"
+        },
+        {
+            "themeName": "Функциональное программирование", "themeId": "3"
+        }
     ]
 }
 
@@ -148,11 +154,22 @@ GET
 /api/v1/tasks/getTasks/<themeId>
 Response:
 {
-    "theme":{"themeName": "math", "themeId": "1"},
-    "listOfTasks": [
-        {"taskName": "Sum1", "taskId": "1", "taskDescription": "Sum all digits..." },
-        {"taskName": "c", "taskId": "2", "taskDescription": "Round all digits..."},
-        {"taskName": "o", "taskId": "3", "taskDescription": "Do something useful...",}
+    "theme": {"themeName": "Простая арифметика","themeId": "1"},
+    "tasksInTheme": [
+        {
+            "taskSubject": "МКАД",
+            "taskId": "12345",
+            "taskDescription": "Василий ехал по МКАД со скоростью V. L - Длина МКАДА.",
+            "themeId": "1",
+            "folderName": "mkad"
+        },
+        {
+            "taskSubject": "Складирование ноутбуков",
+            "taskId": "54321",
+            "taskDescription": "Ноутбуки лежат на складе. Лежат себе и лежат.",
+            "themeId": "1",
+            "folderName": "notebooks"
+        }
     ]
 }
 
@@ -197,7 +214,7 @@ Request:
     "outPutData": "asd"
 }
 
-/*добавление известной задачи к себе в итерацию теста*/
+/*добавление известной задачи к себе в итерацию проекта*/
 POST
 /api/v1/addIssue
 Request:
