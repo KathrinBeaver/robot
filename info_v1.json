@@ -79,7 +79,7 @@ POST
 
 /*получить списки студентов выбранного проекта по projectId*/
 GET
-/api/v1/getStudentsList/<projectId>
+/api/v1/taskChecker/getStudentsList/<projectId>
 
 Response:
 {
@@ -87,26 +87,20 @@ Response:
         {"studentName": "Иванов", "studentId": "studentId1"},
         {"studentName": "Пиванов", "studentId": "studentId2"},
         {"studentName": "Сидоров", "studentId": "studentId3"}
-    ],
-    "taskList": [
-        {"taskName": "h", "taskId": "taskId1"},
-        {"taskName": "c", "taskId": "taskId2"},
-        {"taskName": "o", "taskId": "taskId3"},
-        {"taskName": "я", "taskId": "taskId4"}
-    ],
+    ]
 }
 
 /* Получить готовые к выдаче задачи в projectName и iterationId */
 GET
-/api/v1/getStudentsList/<projectName>/<iterationId>
+/api/v1/taskChecker/getTasksList/<projectId>/<iterationId>
 
 Response:
 {
     "taskList": [
-        {"taskName": "h", "taskId": "taskId1"},
-        {"taskName": "c", "taskId": "taskId2"},
-        {"taskName": "o", "taskId": "taskId3"},
-        {"taskName": "я", "taskId": "taskId4"}
+        {"taskSubject": "h", "taskId": "taskId1"},
+        {"taskSubject": "c", "taskId": "taskId2"},
+        {"taskSubject": "o", "taskId": "taskId3"},
+        {"taskSubject": "я", "taskId": "taskId4"}
     ],
 }
 

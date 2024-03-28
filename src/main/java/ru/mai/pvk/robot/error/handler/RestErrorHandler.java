@@ -16,6 +16,7 @@ import ru.mai.pvk.robot.error.ErrorType;
 import ru.mai.pvk.robot.error.RestExceptionDto;
 import ru.mai.pvk.robot.error.exception.ProjectProccessException;
 import ru.mai.pvk.robot.error.exception.SettingsProccessException;
+import ru.mai.pvk.robot.error.exception.TaskProccessException;
 import ru.mai.pvk.robot.error.exception.UserProccessException;
 
 
@@ -24,13 +25,13 @@ import ru.mai.pvk.robot.error.exception.UserProccessException;
 @RequiredArgsConstructor
 public class RestErrorHandler {
 
-	@ExceptionHandler(HttpMessageConversionException.class)
-	protected ResponseEntity<Object> handle(HttpMessageConversionException ex) {
-		log.error("Exception: {}", ex.getMessage(), ex);
-		return ResponseEntity
-			.status(HttpStatus.BAD_REQUEST)
-			.body(new RestExceptionDto(ErrorType.INVALID_JSON_PARSING, "Deserialization error"));
-	}
+    @ExceptionHandler(HttpMessageConversionException.class)
+    protected ResponseEntity<Object> handle(HttpMessageConversionException ex) {
+        log.error("Exception: {}", ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new RestExceptionDto(ErrorType.INVALID_JSON_PARSING, "Deserialization error"));
+    }
 
     @ExceptionHandler(ProjectProccessException.class)
     protected ResponseEntity<Object> handle(ProjectProccessException ex) {
@@ -40,25 +41,35 @@ public class RestErrorHandler {
                 .body(new RestExceptionDto(ErrorType.PROJECT_ERROR, "Project processing error"));
     }
 
-	@ExceptionHandler(UserProccessException.class)
-	protected ResponseEntity<Object> handle(UserProccessException ex) {
-		log.error("Exception: {}", ex.getMessage(), ex);
-		return ResponseEntity
-				.status(HttpStatus.BAD_REQUEST)
-				.body(new RestExceptionDto(ErrorType.USER_ERROR, "User processing error"));
-	}
+    @ExceptionHandler(UserProccessException.class)
+    protected ResponseEntity<Object> handle(UserProccessException ex) {
+        log.error("Exception: {}", ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new RestExceptionDto(ErrorType.USER_ERROR, "User processing error"));
+    }
 
-	@ExceptionHandler(SettingsProccessException.class)
-	protected ResponseEntity<Object> handle(SettingsProccessException ex) {
-		log.error("Exception: {}", ex.getMessage(), ex);
-		return ResponseEntity
-				.status(HttpStatus.BAD_REQUEST)
-				.body(new RestExceptionDto(ErrorType.SETTINGS_ERROR, "Some incorrect settings received"));
-	}
+    @ExceptionHandler(SettingsProccessException.class)
+    protected ResponseEntity<Object> handle(SettingsProccessException ex) {
+        log.error("Exception: {}", ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new RestExceptionDto(ErrorType.SETTINGS_ERROR, "Some incorrect settings received"));
+    }
 
-	@ExceptionHandler(Exception.class)
-	protected ResponseEntity<Object> handleException(Exception ex) {
-		log.error("Exception: {}", ex.getMessage(), ex);
-		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+    @ExceptionHandler(TaskProccessException.class)
+    protected ResponseEntity<Object> handle(TaskProccessException ex) {
+        log.error("Exception: {}", ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new RestExceptionDto(ErrorType.TASK_OR_ISSUE_PROCESSING_ERROR, "Can't process a task or issue."));
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<Object> handleException(Exception ex) {
+        log.error("Exception: {}", ex.getMessage(), ex);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }
