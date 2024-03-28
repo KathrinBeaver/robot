@@ -84,9 +84,18 @@ GET
 Response:
 {
     "studentList": [
-        {"studentName": "Иванов", "studentId": "studentId1"},
-        {"studentName": "Пиванов", "studentId": "studentId2"},
-        {"studentName": "Сидоров", "studentId": "studentId3"}
+        {
+            "studentId": "12345",
+            "studentName": "Иванов Иван"
+        },
+        {
+            "studentId": "12346",
+            "studentName": "Петров Петр"
+        },
+        {
+            "studentId": "12347",
+            "studentName": "Кузнецов Слава"
+        }
     ]
 }
 
@@ -96,27 +105,35 @@ GET
 
 Response:
 {
-    "taskList": [
-        {"taskSubject": "h", "taskId": "taskId1"},
-        {"taskSubject": "c", "taskId": "taskId2"},
-        {"taskSubject": "o", "taskId": "taskId3"},
-        {"taskSubject": "я", "taskId": "taskId4"}
-    ],
+    "tasksList": [
+        {
+            "taskId": "12345",
+            "taskSubject": "Шашки"
+        },
+        {
+            "taskId": "12346",
+            "taskSubject": "МКАД"
+        },
+        {
+            "taskId": "12347",
+            "taskSubject": "Последнее слово"
+        }
+    ]
 }
 
 
 
 /*назначить выделенное или раскопировать всё всем - создать и назначить каждую задачу на каждого из списка студентов*/
-/api/v1/assingTasksToStudent/<IterationId>
+/api/v1/taskChecker/assignTasksToStudents/<IterationId>
 POST
 {
-    "studentIdList":["studentId1","studentId2","studentId3"],
-    "taskIdList": ["taskId2","taskId3","taskId4"]
+    "tasksList" : [{"taskId":"12345", "taskSubject":"Шашки"}],
+    "studentList":  [{"studentId": "123457", "studentName": "Пупкин Василий"}]
 }
 
-/*Получение тем (я как понимаю это не зависит от преподавателя)*/
+/*Получение тем */
 GET
-/api/v1/getAllTopics
+/api/v1/tasks/getAllTopics
 Response:
 {
     "listOfThemes": [

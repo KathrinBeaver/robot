@@ -47,4 +47,9 @@ public class TaskCheckerServiceImpl implements TaskCheckerService {
 
         return tasks;
     }
+
+    @Override
+    public void assignTasksToStudents(TaskAndStudentListDto tasksAndStudents) {
+
+    }
 }
