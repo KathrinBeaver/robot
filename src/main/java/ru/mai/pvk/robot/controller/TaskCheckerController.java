@@ -1,4 +1,4 @@
-package ru.mai.pvk.robot.controlller;
+package ru.mai.pvk.robot.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
