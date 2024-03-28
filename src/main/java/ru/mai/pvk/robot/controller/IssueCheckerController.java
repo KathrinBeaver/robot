@@ -12,8 +12,8 @@ import ru.mai.pvk.robot.service.TaskCheckerService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/taskChecker")
-public class TaskCheckerController {
+@RequestMapping("/api/v1/issueChecker")
+public class IssueCheckerController {
 
     private final TaskCheckerService taskCheckerService;
 

@@ -145,7 +145,7 @@ Response:
 
 /*Получение задач (в зависимости от темы)*/
 GET
-/api/v1/getTasks/<themeId>
+/api/v1/tasks/getTasks/<themeId>
 Response:
 {
     "theme":{"themeName": "math", "themeId": "1"},
