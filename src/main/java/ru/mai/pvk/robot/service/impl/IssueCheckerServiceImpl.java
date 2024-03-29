@@ -6,6 +6,8 @@ import ru.mai.pvk.robot.model.dto.*;
 import ru.mai.pvk.robot.service.IssueCheckerService;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +51,23 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
     @Override
     public void assignTasksToStudents(TaskAndStudentListDto tasksAndStudents) {
 
+    }
+
+    @Override
+    public List<LogDto> getLogs(int idStart) {
+        List<LogDto> result = new ArrayList<>();
+        String address = "https://www.hostedredmine.com/";
+        int startLog = (new Random()).nextInt(300);
+
+        for (int i = startLog; i < startLog + 20; i++) {
+            if (i < idStart) continue;
+            result.add(LogDto.of(i, wrapToHref(String.valueOf(i), address) + " passed"));
+        }
+
+        return result;
+    }
+
+    private String wrapToHref(String issueId, String address) {
+        return "<a href='" + address + "issues/" + issueId + "'>" + issueId + "</a>";
     }
 }

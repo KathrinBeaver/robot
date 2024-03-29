@@ -5,6 +5,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public final class TestDto {
 	private final int testId;
+	private final String taskId;
     private final String inputData;
     private final String outPutData;
 }

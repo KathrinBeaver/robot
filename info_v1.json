@@ -195,38 +195,60 @@ Response:
 
 /* добавление новой задачи */
 PUT
-/api/v1/tasks/addTask
+/api/v1/tasks/addOrUpdateTask
 Request:
 {
-    "themeId": "1",
-    "taskName": "h",
-    "taskDescription": "asd"
-    "listOfTests": [
-        {"testId": "testId1", "inputData": "1 1 1", "outPutData": "3"},
-        {"testId": "testId2", "inputData": "1 2 3"},"outPutData": "1 2 3"},
-        {"testId": "testId3", "inputData": "1 \n 1", "outPutData": ""}
-    ]
+            "taskSubject": "МКАД",
+            "taskId": "12345",
+            "taskDescription": "Василий ехал по МКАД со скоростью V. L - Длина МКАДА.",
+            "themeId": "1",
+            "folderName": "mkad"
 }
+
 Response:
 {
-	"taskId": "taskId1",
+	"taskId": "123456",
 }
 
 /*добавление нового теста*/
 PUT
-/api/v1/addTest/<taskId>
+/api/v1/tasks/addTest/<taskId>
 Request:
 {
     "taskId": "1",
     "inputData": "h",
     "outPutData": "asd"
 }
+Response
+{
+    "testId": 12345,
+    "taskId": "1123",
+    "inputData": "h",
+    "outPutData": "h"
+}
 
 /*добавление известной задачи к себе в итерацию проекта*/
 POST
-/api/v1/addIssue
+/api/v1/tasks/addIssue
 Request:
 {
     "taskId": "taskId1",
-    "iterationId": "IterationId",
+    "iterationId": "IterationId"
 }
+
+/*Получение логов проверки задач*/
+POST
+/api/v1/issueChecker/getLogs/<idStart>
+Возвращает 100 логов, начиная с idStart
+Response
+
+    [
+	{
+        "recordId": 19,
+        "log": "<a href='https://www.hostedredmine.com/issues/19'>19</a> passed"
+    },
+    {
+        "recordId": 20,
+        "log": "<a href='https://www.hostedredmine.com/issues/20'>20</a> passed"
+    }
+	]

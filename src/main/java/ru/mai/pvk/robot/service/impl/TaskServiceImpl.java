@@ -41,11 +41,29 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskTestsDto getTaskTests(String testId) {
-        TaskTestsDto result = TaskTestsDto.of(testId, new ArrayList<>());
-        result.getTaskTests().add(TestDto.of(1, "1 1 1", "3"));
-        result.getTaskTests().add(TestDto.of(2, "1 \n 1", "2"));
+    public TaskTestsDto getTaskTests(String taskId) {
+        TaskTestsDto result = TaskTestsDto.of(taskId, new ArrayList<>());
+        result.getTaskTests().add(TestDto.of(1, taskId, "1 1 1", "3"));
+        result.getTaskTests().add(TestDto.of(2, taskId, "1 \n 1", "2"));
 
         return result;
+    }
+
+    @Override
+    public String addOrUpdateTask(TaskDto task) {
+
+        return (task.getTaskId() != null) ? task.getTaskId() : "000000";
+    }
+
+    @Override
+    public TestDto addOrUpdateTest(TestDto test) {
+        int id = test.getTestId() == 0 ? 12345 : test.getTestId();
+        TestDto result = TestDto.of(id, test.getTaskId(), test.getInputData(), test.getInputData());
+        return result;
+    }
+
+    @Override
+    public void addIssue(AddIssueDto data) {
+
     }
 }

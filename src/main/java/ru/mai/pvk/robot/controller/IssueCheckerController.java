@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.mai.pvk.robot.error.exception.ProjectProccessException;
 import ru.mai.pvk.robot.error.exception.TaskProccessException;
-import ru.mai.pvk.robot.model.dto.StudentListDto;
-import ru.mai.pvk.robot.model.dto.TaskAndStudentListDto;
-import ru.mai.pvk.robot.model.dto.IssueCheckerDto;
-import ru.mai.pvk.robot.model.dto.IssueListDto;
+import ru.mai.pvk.robot.model.dto.*;
 import ru.mai.pvk.robot.service.IssueCheckerService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -81,5 +80,17 @@ public class IssueCheckerController {
         }
 
         return tasksList;
+    }
+
+    @GetMapping(value = "/getLogs/{idStart}")
+    public List<LogDto> getLogs(@PathVariable("idStart") int idStart) {
+        List<LogDto> logs;
+        try {
+            logs = taskCheckerService.getLogs(idStart);
+        } catch (Exception e) {
+            throw new ProjectProccessException();
+        }
+
+        return logs;
     }
 }

@@ -7,4 +7,9 @@ public interface TaskService {
     ThemeTasksDto getThemeTasks(String themeId);
     TaskTestsDto getTaskTests(String testId);
 
+    String addOrUpdateTask(TaskDto task);
+
+    TestDto addOrUpdateTest(TestDto test);
+
+    void addIssue(AddIssueDto data);
 }

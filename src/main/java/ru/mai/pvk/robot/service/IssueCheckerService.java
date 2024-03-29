@@ -1,9 +1,8 @@
 package ru.mai.pvk.robot.service;
 
-import ru.mai.pvk.robot.model.dto.StudentListDto;
-import ru.mai.pvk.robot.model.dto.TaskAndStudentListDto;
-import ru.mai.pvk.robot.model.dto.IssueCheckerDto;
-import ru.mai.pvk.robot.model.dto.IssueListDto;
+import ru.mai.pvk.robot.model.dto.*;
+
+import java.util.List;
 
 public interface IssueCheckerService {
     void startFullCheck(IssueCheckerDto settings);
@@ -13,4 +12,6 @@ public interface IssueCheckerService {
     IssueListDto getTasksList(String projectId, String iterationId);
 
     void assignTasksToStudents(TaskAndStudentListDto tasksAndStudents);
+
+    List<LogDto> getLogs(int idStart);
 }
