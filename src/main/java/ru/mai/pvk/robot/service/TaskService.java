@@ -12,4 +12,6 @@ public interface TaskService {
     TestDto addOrUpdateTest(TestDto test);
 
     void addIssue(AddIssueDto data);
+
+    TaskDto getTaskDto(String taskId);
 }

@@ -252,3 +252,43 @@ Response
         "log": "<a href='https://www.hostedredmine.com/issues/20'>20</a> passed"
     }
 	]
+/* Получение результатов плагиата по задаче */
+GET api/v1/plagiat/getPlagiat/{taskId}
+{
+    "task": {
+        "taskSubject": "Шашки",
+        "taskId": "42",
+    },
+    "studentPlagiatPercentage": {
+        "Иванов Иван": [
+            {
+                "userName": "Петров Петр",
+                "percent": 0.2
+            },
+            {
+                "userName": "Кузнецов Слава",
+                "percent": 0.8
+            }
+        ],
+        "Кузнецов Слава": [
+            {
+                "userName": "Иванов Иван",
+                "percent": 0.8
+            },
+            {
+                "userName": "Петров Петр",
+                "percent": 0.6
+            }
+        ],
+        "Петров Петр": [
+            {
+                "userName": "Кузнецов Слава",
+                "percent": 0.6
+            },
+            {
+                "userName": "Иванов Иван",
+                "percent": 0.2
+            }
+        ]
+    }
+}

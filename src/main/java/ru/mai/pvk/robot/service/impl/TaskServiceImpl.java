@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.error.exception.TaskProccessException;
 import ru.mai.pvk.robot.model.dto.*;
-import ru.mai.pvk.robot.service.IssueCheckerService;
 import ru.mai.pvk.robot.service.TaskService;
 
 import java.util.ArrayList;
@@ -65,5 +64,19 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void addIssue(AddIssueDto data) {
 
+    }
+
+    @Override
+    public TaskDto getTaskDto(String taskId) {
+        TaskDto result = TaskDto.of(
+                "Шашки",
+                taskId,
+                null,
+                null,
+                null,
+                null
+        );
+
+        return result;
     }
 }
