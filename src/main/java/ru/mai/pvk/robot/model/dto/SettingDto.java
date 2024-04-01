@@ -10,6 +10,7 @@ public final class SettingDto {
 
 	private final int  id;
 	private final String name;
+	private final String userDisplayName;
     private final String url;
 
 	private final String APIKey;

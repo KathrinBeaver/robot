@@ -28,6 +28,7 @@ public class SettingServiceImpl implements SettingService {
 
         SettingDto settingDto = SettingDto.of(42,
                 name,
+                name,
                 url,
                 apiKey,
                 projectsList

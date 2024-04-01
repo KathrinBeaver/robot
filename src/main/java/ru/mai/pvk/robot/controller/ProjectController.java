@@ -15,27 +15,27 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+
     @GetMapping()
-    public List<ProjectDto> getAllProjects () {
+    public List<ProjectDto> getAllProjects() {
         return projectService.getProjects();
     }
 
     @GetMapping(value = "/iterations/{projectId}")
     public ProjectIterationsDto getIterations(@PathVariable("projectId") String projectId) {
-        return  projectService.getProjectIterations(projectId);
+        return projectService.getProjectIterations(projectId);
     }
 
     @GetMapping(value = "/{id}")
-    public ProjectDto getProject (@PathVariable("id") Integer id) {
+    public ProjectDto getProject(@PathVariable("id") Integer id) {
         return projectService.getProjectbyId(id);
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    public String updateProject (@RequestBody ProjectDto projectDto) {
+    public String updateProject(@RequestBody ProjectDto projectDto) {
         try {
             projectService.updateProject(projectDto);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ProjectProccessException();
         }
 
@@ -43,11 +43,10 @@ public class ProjectController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public String addProject (@RequestBody ProjectDto projectDto) {
+    public String addProject(@RequestBody ProjectDto projectDto) {
         try {
             projectService.addProject(projectDto);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ProjectProccessException();
         }
 
