@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.error.exception.UserProccessException;
 import ru.mai.pvk.robot.model.dto.IssueCheckerSettingsDto;
+import ru.mai.pvk.robot.model.dto.LintInfoType;
 import ru.mai.pvk.robot.model.dto.ProjectDto;
 import ru.mai.pvk.robot.model.dto.SettingDto;
 import ru.mai.pvk.robot.service.RobotSettingsService;
@@ -19,6 +20,8 @@ public class RobotSettingsServiceImpl implements RobotSettingsService {
             true,
             true,
             true,
+            true,
+            LintInfoType.FULL_INFO,
             true
     );
 
@@ -33,7 +36,9 @@ public class RobotSettingsServiceImpl implements RobotSettingsService {
                 aSettings.isShowErrorResponse(),
                 aSettings.isCheckAllIterations(),
                 aSettings.isNeedLint(),
-                aSettings.isAssignTasksToStudent()
+                aSettings.isAssignTasksToStudent(),
+                aSettings.getLintInformation(),
+                aSettings.isNeedCloseTasks()
                 );
         settings = newSettings;
     }

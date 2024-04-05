@@ -11,6 +11,8 @@ public final class IssueCheckerSettingsDto {
 	private final boolean checkAllIterations;
 	private final boolean needLint;
 	private final boolean assignTasksToStudent;
+	private final LintInfoType lintInformation;
+	private final boolean needCloseTasks;
 }
 
 
