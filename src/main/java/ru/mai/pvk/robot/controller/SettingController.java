@@ -10,13 +10,13 @@ import ru.mai.pvk.robot.service.SettingService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/settings/{id}")
+@RequestMapping("/api/v1/settings")
 public class SettingController {
 
     private final SettingService settingService;
     @GetMapping()
-    public SettingDto getSettings(@PathVariable String id) {
-        return settingService.getUserSettings(id);
+    public SettingDto getSettings() {
+        return settingService.getUserSettings();
     }
 
 }

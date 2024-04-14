@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mai.pvk.robot.securingweb.security.service.UserService;
 
 @RestController
-@RequestMapping("/example")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Примеры", description = "Примеры запросов с разными правами доступа")
 public class ExampleController {
@@ -22,16 +22,11 @@ public class ExampleController {
         return "Hello, world!";
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/api/v1/admin")
     @Operation(summary = "Доступен только авторизованным пользователям с ролью ADMIN")
     @PreAuthorize("hasRole('ADMIN')")
     public String exampleAdmin() {
         return "Hello, admin!";
     }
 
-    @GetMapping("/get-admin")
-    @Operation(summary = "Получить роль ADMIN (для демонстрации)")
-    public void getAdmin() {
-        service.getAdmin();
-    }
 }

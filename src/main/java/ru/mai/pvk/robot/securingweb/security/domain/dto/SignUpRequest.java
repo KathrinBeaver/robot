@@ -28,4 +28,8 @@ public class SignUpRequest {
     @Schema(description = "Пароль", example = "my_1secret1_password")
     @Size(max = 255, message = "Длина пароля должна быть не более 255 символов")
     private String password;
+
+    @Schema(description = "Ключ подключения к redmine", example = "zxcasdqwe")
+    @Size(max = 255, message = "Проверьте его в аккаунте редмайн.")
+    private String redmineApiKey;
 }

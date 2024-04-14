@@ -8,7 +8,7 @@ import java.util.List;
 @Value(staticConstructor = "of")
 public final class SettingDto {
 
-	private final int  id;
+	private final long  id;
 	private final String name;
 	private final String userDisplayName;
     private final String url;

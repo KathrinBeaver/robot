@@ -2,7 +2,8 @@ spring:
   application:
     name: security-security
   datasource:
-    url: jdbc:h2:mem:security-security
+ #   url: jdbc:h2:mem:security-security
+    url: jdbc:h2:file:./myUserDb
     driverClassName: org.h2.Driver
     username: root
     password: root
@@ -10,7 +11,7 @@ spring:
     hibernate:
       naming:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
