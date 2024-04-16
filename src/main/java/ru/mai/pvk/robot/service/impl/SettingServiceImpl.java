@@ -55,11 +55,13 @@ public class SettingServiceImpl implements SettingService {
         String apiKey = user.getRedmineApiKey();
         List<ProjectDto> projectsList = new ArrayList<>();
         Optional<List<UserProjects>> byUserId = userProjectRepository.findByUserId(user.getId());
+        //TODO: Null check
         for (UserProjects userProjects : byUserId.get()) {
             projectsList.add(ProjectDto.of(
                     userProjects.getProjectId(),
                     userProjects.getProjectName()));
         }
+
         SettingDto settingDto = SettingDto.of(
                 user.getId(), name, name, url, apiKey, projectsList);
 
@@ -74,7 +76,7 @@ public class SettingServiceImpl implements SettingService {
         }
         User user = userService.getCurrentUser();
         user.setRedmineApiKey(settingDto.getApiKey());
-
+        //TODO: Null check
         for (ProjectDto projectDto : settingDto.getProjectsList()) {
             UserProjects tmp = UserProjects.builder()
                     .userId(user.getId())
