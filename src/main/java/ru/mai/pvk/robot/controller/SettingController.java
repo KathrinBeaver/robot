@@ -1,12 +1,12 @@
 package ru.mai.pvk.robot.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.mai.pvk.robot.model.dto.SettingDto;
 import ru.mai.pvk.robot.service.SettingService;
+
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +21,9 @@ public class SettingController {
     }
 
 
-
+    @PutMapping()
+    public Map<String, String> saveSettings(@RequestBody SettingDto settingDto) {
+        String response = settingService.saveSettings(settingDto);
+        return Collections.singletonMap("200", response);
+    }
 }

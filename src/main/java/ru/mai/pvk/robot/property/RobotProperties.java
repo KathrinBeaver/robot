@@ -11,5 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "robot")
 public class RobotProperties {
     private String version;
-
+    private String url;
 }

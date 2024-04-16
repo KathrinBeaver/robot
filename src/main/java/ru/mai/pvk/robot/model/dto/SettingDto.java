@@ -13,7 +13,7 @@ public final class SettingDto {
 	private final String userDisplayName;
     private final String url;
 
-	private final String APIKey;
+	private final String apiKey;
 
 	private final List<ProjectDto> projectsList;
 }

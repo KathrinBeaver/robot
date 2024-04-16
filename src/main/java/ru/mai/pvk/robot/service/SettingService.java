@@ -4,5 +4,7 @@ import ru.mai.pvk.robot.model.dto.SettingDto;
 
 public interface SettingService {
 
-    public SettingDto getUserSettings();
+    SettingDto getUserSettings();
+
+    String saveSettings(SettingDto settingDto);
 }

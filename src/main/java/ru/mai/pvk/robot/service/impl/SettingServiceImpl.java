@@ -6,6 +6,7 @@ import ru.mai.pvk.robot.error.exception.ProjectProccessException;
 import ru.mai.pvk.robot.error.exception.UserProccessException;
 import ru.mai.pvk.robot.model.dto.ProjectDto;
 import ru.mai.pvk.robot.model.dto.SettingDto;
+import ru.mai.pvk.robot.property.RobotProperties;
 import ru.mai.pvk.robot.securingweb.security.domain.model.User;
 import ru.mai.pvk.robot.securingweb.security.domain.model.UserProjects;
 import ru.mai.pvk.robot.securingweb.security.repository.UserProjectRepository;
@@ -22,11 +23,12 @@ import java.util.Optional;
 public class SettingServiceImpl implements SettingService {
     private final UserService userService;
     private final UserProjectRepository userProjectRepository;
+    private final RobotProperties robotProperties;
 
     public SettingDto fillFakeUserSettings(User user) {
 
         String name = user.getUsername();
-        String url = "https://hostedredmine.com";
+        String url = robotProperties.getUrl();
         String apiKey = user.getRedmineApiKey();
 
         List<ProjectDto> projectsList = new ArrayList<>();
@@ -49,7 +51,7 @@ public class SettingServiceImpl implements SettingService {
     public SettingDto getUserSettings() {
         User user = userService.getCurrentUser();
         String name = user.getUsername();
-        String url = "https://hostedredmine.com";
+        String url = robotProperties.getUrl();
         String apiKey = user.getRedmineApiKey();
         List<ProjectDto> projectsList = new ArrayList<>();
         Optional<List<UserProjects>> byUserId = userProjectRepository.findByUserId(user.getId());
@@ -64,4 +66,26 @@ public class SettingServiceImpl implements SettingService {
 
         return settingDto;
     }
+
+    @Override
+    public String saveSettings(SettingDto settingDto) {
+        if (settingDto.getUrl() != null && !settingDto.getUrl().isEmpty()) {
+            robotProperties.setUrl(settingDto.getUrl());
+        }
+        User user = userService.getCurrentUser();
+        user.setRedmineApiKey(settingDto.getApiKey());
+
+        for (ProjectDto projectDto : settingDto.getProjectsList()) {
+            UserProjects tmp = UserProjects.builder()
+                    .userId(user.getId())
+                    .projectId(projectDto.getProjectId())
+                    .projectName(projectDto.getProjectName())
+                    .build();
+
+            userProjectRepository.save(tmp);
+        }
+
+        return "200 - OK";
+    }
+
 }

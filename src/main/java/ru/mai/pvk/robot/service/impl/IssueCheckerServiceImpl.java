@@ -3,6 +3,7 @@ package ru.mai.pvk.robot.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.model.dto.*;
+import ru.mai.pvk.robot.property.RobotProperties;
 import ru.mai.pvk.robot.service.IssueCheckerService;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class IssueCheckerServiceImpl implements IssueCheckerService {
+    private final RobotProperties robotProperties;
+
     @Override
     public void startSingleIssueCheck(IssueCheckerDto settings) {
 
@@ -56,7 +59,7 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
     @Override
     public List<LogDto> getLogs(int idStart) {
         List<LogDto> result = new ArrayList<>();
-        String address = "https://www.hostedredmine.com/";
+        String address = robotProperties.getUrl();
         int startLog = (new Random()).nextInt(300);
 
         for (int i = startLog; i < startLog + 20; i++) {
