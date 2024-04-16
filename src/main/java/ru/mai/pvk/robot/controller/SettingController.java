@@ -14,9 +14,12 @@ import ru.mai.pvk.robot.service.SettingService;
 public class SettingController {
 
     private final SettingService settingService;
+
     @GetMapping()
     public SettingDto getSettings() {
         return settingService.getUserSettings();
     }
+
+
 
 }

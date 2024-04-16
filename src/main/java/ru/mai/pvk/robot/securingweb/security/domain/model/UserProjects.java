@@ -23,12 +23,12 @@ public class UserProjects {
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "userId")
+    @Column(name = "user_Id")
     private Long userId;
 
-    @Column(name = "projectName", unique = true, nullable = false)
+    @Column(name = "project_Name", unique = true, nullable = false)
     private String projectName;
 
-    @Column(name = "projectId", unique = true, nullable = false)
+    @Column(name = "project_Id", unique = true, nullable = false)
     private String projectId;
 }
