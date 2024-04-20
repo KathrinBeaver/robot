@@ -15,7 +15,7 @@ import ru.mai.pvk.robot.securingweb.security.service.AuthenticationService;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @Tag(name = "Аутентификация")
 public class AuthController {
