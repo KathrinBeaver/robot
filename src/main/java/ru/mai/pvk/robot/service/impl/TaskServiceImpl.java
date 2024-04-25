@@ -7,17 +7,44 @@ import ru.mai.pvk.robot.model.dto.*;
 import ru.mai.pvk.robot.service.TaskService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
     @Override
-    public ThemeListDto getThemes() {
+    public ThemeListDto getAllThemes() {
         ThemeListDto result = ThemeListDto.of(new ArrayList<>());
         result.getThemeListList().add(ThemeDto.of("Простая арифметика", "1"));
         result.getThemeListList().add(ThemeDto.of("Рекурсия", "2"));
         result.getThemeListList().add(ThemeDto.of("Функциональное программирование", "3"));
+
+        return result;
+    }
+
+    @Override
+    public List<TaskDto> getAllTasks() {
+        List<TaskDto> result = new ArrayList<>();
+
+        TaskDto task = TaskDto.of(
+                "Шашки",
+                "0",
+                null,
+                null,
+                null,
+                null
+        );
+        TaskDto task2 = TaskDto.of(
+                "Ставки",
+                "1",
+                null,
+                null,
+                null,
+                null
+        );
+        result.add(task);
+        result.add(task2);
 
         return result;
     }

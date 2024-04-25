@@ -7,6 +7,7 @@ import ru.mai.pvk.robot.model.dto.*;
 import ru.mai.pvk.robot.service.TaskService;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,13 +21,26 @@ public class TaskController {
     public ThemeListDto getAllTopics() {
         ThemeListDto themes;
         try {
-            themes = taskService.getThemes();
+            themes = taskService.getAllThemes();
         } catch (Exception e) {
             throw new TaskProccessException();
         }
 
         return themes;
     }
+
+    @GetMapping(value = "/getAllTasks")
+    public List<TaskDto> getAllTasks() {
+        List<TaskDto> tasks;
+        try {
+            tasks = taskService.getAllTasks();
+        } catch (Exception e) {
+            throw new TaskProccessException();
+        }
+
+        return tasks;
+    }
+
 
     @GetMapping(value = "/getTasks/{themeId}")
     public ThemeTasksDto getTasks(@PathVariable String themeId) {
