@@ -42,4 +42,31 @@ public class PlagiatServiceImpl implements PlagiatService {
 
         return result;
     }
+
+    @Override
+    public PlagiatTwoIssuesComparisonDto getComparison(String taskId, String firstStudent, String secondStudent) {
+
+        Map<String, String> twoIssuesComparison = new HashMap<>();
+        //TODO: get Issue soulution for the first Student
+        String firstSolution = """
+                int k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b);
+                """;
+        //TODO: get Issue soulution for the second Student
+        String secondSolution = """
+                int m;
+                int a = m + 10;
+                int b = m + 20;
+                System.out.println(a);
+                """;
+        twoIssuesComparison.put(firstStudent, firstSolution);
+        twoIssuesComparison.put(secondStudent, secondSolution);
+
+        PlagiatTwoIssuesComparisonDto result = PlagiatTwoIssuesComparisonDto.of(
+                taskService.getTaskDto(taskId), twoIssuesComparison
+        );
+        return result;
+    }
 }

@@ -28,4 +28,18 @@ public class PlagiatController {
 
         return plagiat;
     }
+
+    @GetMapping(value = "/getPlagiatOfTwoIssues/{taskId}/{firstStudent}/{secondStudent}")
+    public PlagiatTwoIssuesComparisonDto getComparison(@PathVariable String taskId,
+                                    @PathVariable String firstStudent,
+                                    @PathVariable String secondStudent) {
+        PlagiatTwoIssuesComparisonDto plagiat;
+        try {
+            plagiat = plagiatService.getComparison(taskId,firstStudent,secondStudent);
+        } catch (Exception e) {
+            throw new TaskProccessException();
+        }
+
+        return plagiat;
+    }
 }
