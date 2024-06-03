@@ -12,4 +12,5 @@ import org.springframework.context.annotation.Configuration;
 public class RobotProperties {
     private String version;
     private String url;
+    private Long loginTimeout;
 }

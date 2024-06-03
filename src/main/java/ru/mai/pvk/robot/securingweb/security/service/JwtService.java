@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.mai.pvk.robot.property.RobotProperties;
 import ru.mai.pvk.robot.securingweb.security.domain.model.User;
 
 import java.security.Key;
@@ -19,8 +20,14 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+    
     @Value("${token.signing.key}")
     private String jwtSigningKey;
+    private final RobotProperties robotProperties;
+
+    public JwtService(RobotProperties robotProperties) {
+        this.robotProperties = robotProperties;
+    }
 
     /**
      * Извлечение имени пользователя из токена
@@ -81,11 +88,10 @@ public class JwtService {
      * @return токен
      */
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        long robotPropertiesMs = robotProperties.getLoginTimeout();
         String compact = Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                //.setExpiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
-                //test Expiration 5 min
-                .setExpiration(new Date(System.currentTimeMillis() + 300000))
+                .setExpiration(new Date(System.currentTimeMillis() + robotPropertiesMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
         return compact;
     }
