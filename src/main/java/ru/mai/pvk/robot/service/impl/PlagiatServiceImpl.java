@@ -29,7 +29,6 @@ public class PlagiatServiceImpl implements PlagiatService {
 
 
         temp.put(ivanov, new ArrayList<>());
-
         temp.put(petrov, new ArrayList<>());
         temp.put(kuznetsov, new ArrayList<>());
 
@@ -53,13 +52,52 @@ public class PlagiatServiceImpl implements PlagiatService {
                 int a = k + 10;
                 int b = k + 20;
                 System.out.println(b);
+                      int k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b); System.out.println(b);
+                nt k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b);
+                      int k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b); System.out.println(b);
+                nt k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b);
+                      int k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b); System.out.println(b);
                 """;
-        //TODO: get Issue soulution for the second Student
+        //TODO: get Issue solution for the second Student
         String secondSolution = """
                 int m;
-                int a = m + 10;
                 int b = m + 20;
-                System.out.println(a);
+                System.out.println(a); System.out.println(b);
+                int k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b); System.out.println(b);
+                nt k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b);
+                      int k;
+                      nt k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b);
+                      int k;
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b); System.out.println(b);
+                int a = k + 10;
+                int b = k + 20;
+                System.out.println(b); System.out.println(b);
                 """;
         twoIssuesComparison.put(firstStudent, firstSolution);
         twoIssuesComparison.put(secondStudent, secondSolution);
