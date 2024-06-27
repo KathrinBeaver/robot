@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package ru.mai.pvk.robot.redmine.lints;
-import tools.PvkLogger;
+
+import ru.mai.pvk.robot.redmine.data.utils.PvkLogger;
 
 import java.io.File;
 import java.io.IOException;
