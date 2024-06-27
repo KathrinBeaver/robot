@@ -1,6 +1,6 @@
 package ru.mai.pvk.robot.redmine.data.utils;
 
-import lintsForLangs.MyPylint;
+import ru.mai.pvk.robot.redmine.lints.MyPylint;
 
 import java.io.*;
 import java.nio.file.Files;

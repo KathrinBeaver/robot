@@ -5,7 +5,7 @@
  */
 package ru.mai.pvk.robot.redmine.lints;
 
-import tools.ZipFile;
+import ru.mai.pvk.robot.redmine.data.utils.ZipFile;
 
 import java.io.*;
 import java.nio.file.Files;
