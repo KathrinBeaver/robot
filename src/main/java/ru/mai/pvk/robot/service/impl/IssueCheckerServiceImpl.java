@@ -1,9 +1,13 @@
 package ru.mai.pvk.robot.service.impl;
 
+import com.taskadapter.redmineapi.RedmineException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.model.dto.*;
 import ru.mai.pvk.robot.property.RobotProperties;
+import ru.mai.pvk.robot.redmine.ConnectionWithRedmine;
+import ru.mai.pvk.robot.securingweb.security.domain.model.User;
+import ru.mai.pvk.robot.securingweb.security.service.UserService;
 import ru.mai.pvk.robot.service.IssueCheckerService;
 
 import java.time.LocalDateTime;
@@ -15,6 +19,8 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class IssueCheckerServiceImpl implements IssueCheckerService {
     private final RobotProperties robotProperties;
+    private final ConnectionWithRedmine connection;
+    private final UserService userService;
 
     @Override
     public void startSingleIssueCheck(IssueCheckerDto settings) {
@@ -28,13 +34,15 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
 
     @Override
     public StudentListDto getStudentsList(String projectId) {
+        User user = userService.getCurrentUser();
         StudentListDto students = StudentListDto.of(new ArrayList<>());
-        students.getStudentList().add(
-                StudentDto.of("12345", "Иванов Иван"));
-        students.getStudentList().add(
-                StudentDto.of("12346", "Петров Петр"));
-        students.getStudentList().add(
-                StudentDto.of("12347", "Кузнецов Слава"));
+        try {
+            connection.init(robotProperties.getUrl(), user.getRedmineApiKey(), projectId);
+        } catch (RedmineException e) {
+            throw new RuntimeException(e);
+        }
+
+        students.getStudentList().addAll(connection.getProjectUsers());
 
         return students;
     }

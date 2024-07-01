@@ -8,6 +8,7 @@ package ru.mai.pvk.robot.redmine;
 import com.taskadapter.redmineapi.*;
 import com.taskadapter.redmineapi.bean.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.OkHttp;
@@ -16,6 +17,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.codec.Charsets;
 import org.apache.http.entity.ContentType;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import ru.mai.pvk.robot.model.dto.StudentDto;
 import ru.mai.pvk.robot.redmine.data.ConfiguredTask;
 import ru.mai.pvk.robot.redmine.data.LintReportMode;
 import ru.mai.pvk.robot.redmine.data.TaskInfo;
@@ -42,8 +46,9 @@ import static ru.mai.pvk.robot.redmine.data.constants.TaskStatus.STATUS_ID_APPRO
 import static ru.mai.pvk.robot.redmine.data.constants.TaskStatus.STATUS_ID_CLOSED;
 
 /**
- * @author user
+ * @author Zerg0s
  */
+@Component
 public class ConnectionWithRedmine {
 
     static final String myFilesDir = ".\\myFiles\\";
@@ -51,7 +56,11 @@ public class ConnectionWithRedmine {
     boolean returnBackIfAllOk = true;
     @Setter
     boolean lint = true;
+    @Setter
+    @Getter
     private String url;
+    @Setter
+    @Getter
     private String apiAccessKey;
     @Getter
     private String projectKey;
@@ -68,38 +77,36 @@ public class ConnectionWithRedmine {
     private String assigneeName = "";
 
     @Getter
-    private final RedmineManager redmineManager;
+    private RedmineManager redmineManager;
 
     @Getter
     private IssueManager issueManager;
     private AttachmentManager attachmentManager;
     private List<Issue> issues;
     @Getter
-    private final ProjectManager projectManager;
+    private ProjectManager projectManager;
     private List<Project> projects;
     private UserManager userManager;
     private List<User> users;
     private List<Membership> projectsUsers;
     private List<Version> versions;
 
-    public ConnectionWithRedmine(String apikey, String projectKey, String url) {
-        this.apiAccessKey = apikey;
-        this.projectKey = projectKey;
+    public ConnectionWithRedmine() {
+
+    }
+
+    public void init(String url, String apikey, String projectId) throws RedmineException {
         this.url = url;
+        this.projectKey = projectId;
+        this.apiAccessKey = apikey;
+
         this.redmineManager = RedmineManagerFactory.createWithApiKey(url, apiAccessKey);
         this.issueManager = redmineManager.getIssueManager();
         this.attachmentManager = redmineManager.getAttachmentManager();
         this.projectManager = redmineManager.getProjectManager();
         this.userManager = redmineManager.getUserManager();
 
-        try {
-            redmineManager.getTransport().setObjectsPerPage(100);
-            redmineManager.setObjectsPerPage(100);
-            projectsUsers = redmineManager.getProjectManager().getProjectMembers(this.projectKey);
-            versions = projectManager.getVersions(projectManager.getProjectByKey(projectKey).getId());
-        } catch (RedmineException ex) {
-            logger.info(ex.toString());
-        }
+        getProjectDetails(projectKey);
     }
 
     public void setReturnBackIfAllOk(Boolean value) {
@@ -483,6 +490,7 @@ public class ConnectionWithRedmine {
         } catch (RedmineException e) {
             logger.info(e.getMessage());
         }
+
         return uniqueIssues;
     }
 
@@ -583,10 +591,9 @@ public class ConnectionWithRedmine {
                     removeDirectory(aFile);
                 }
             }
-            dir.delete();
-        } else {
-            dir.delete();
         }
+
+        dir.delete();
     }
 
     private void cleanDirectory(File dir) {
@@ -609,7 +616,7 @@ public class ConnectionWithRedmine {
         }
     }
 
-    public ArrayList<String> getProjectUsers() {
+    public ArrayList<StudentDto> getProjectUsers() {
         MembershipManager membershipManager = redmineManager.getMembershipManager();
         List<Role> roles;
         List<Membership> memberships = new ArrayList<>();
@@ -619,9 +626,9 @@ public class ConnectionWithRedmine {
             logger.info(ex.toString());
         }
 
-        ArrayList<String> retArray = new ArrayList<>();
+        ArrayList<StudentDto> retArray = new ArrayList<>();
         for (Membership m : memberships) {
-            retArray.add(m.getUserName());
+            retArray.add(StudentDto.of(m.getUserId().toString(), m.getUserName()));
         }
 
         return retArray;
@@ -797,12 +804,9 @@ public class ConnectionWithRedmine {
     public void setProjectKey(String projectKey) {
         this.projectKey = projectKey;
         try {
-            redmineManager.getTransport().setObjectsPerPage(100);
-            redmineManager.setObjectsPerPage(100);
-            projectsUsers = redmineManager.getProjectManager().getProjectMembers(this.projectKey);
-            versions = projectManager.getVersions(projectManager.getProjectByKey(projectKey).getId());
-        } catch (RedmineException ex) {
-            logger.info(ex.toString());
+            getProjectDetails(projectKey);
+        } catch (RedmineException e) {
+            logger.error(e.getMessage());
         }
     }
 
@@ -813,5 +817,18 @@ public class ConnectionWithRedmine {
             }
         }
         return 0;
+    }
+
+
+    private void getProjectDetails(String projectKey) throws RedmineException {
+        try {
+            redmineManager.getTransport().setObjectsPerPage(100);
+            redmineManager.setObjectsPerPage(100);
+            projectsUsers = redmineManager.getProjectManager().getProjectMembers(this.projectKey);
+            versions = projectManager.getVersions(projectManager.getProjectByKey(projectKey).getId());
+        } catch (RedmineException ex) {
+            logger.info(ex.toString());
+            throw ex;
+        }
     }
 }
