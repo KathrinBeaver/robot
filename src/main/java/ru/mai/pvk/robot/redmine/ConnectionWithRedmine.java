@@ -19,6 +19,7 @@ import org.apache.commons.codec.Charsets;
 import org.apache.http.entity.ContentType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import ru.mai.pvk.robot.model.dto.IssueDto;
 import ru.mai.pvk.robot.model.dto.StudentDto;
 import ru.mai.pvk.robot.redmine.data.ConfiguredTask;
 import ru.mai.pvk.robot.redmine.data.LintReportMode;
@@ -90,6 +91,8 @@ public class ConnectionWithRedmine {
     private List<User> users;
     private List<Membership> projectsUsers;
     private List<Version> versions;
+    private boolean isInited;
+    private final Object syncObj = new Object();
 
     public ConnectionWithRedmine() {
 
@@ -107,6 +110,11 @@ public class ConnectionWithRedmine {
         this.userManager = redmineManager.getUserManager();
 
         getProjectDetails(projectKey);
+        isInited = true;
+    }
+
+    public boolean isInitialized() {
+        return isInited;
     }
 
     public void setReturnBackIfAllOk(Boolean value) {
@@ -457,7 +465,7 @@ public class ConnectionWithRedmine {
             }
             List<Issue> current = issueManager.getIssues(params).getResults();
             tmpList.addAll(current);
-            if (current.size() == 0) {
+            if (current.isEmpty()) {
                 hasMoreIssues = false;
             }
             offset += 100;
@@ -617,38 +625,41 @@ public class ConnectionWithRedmine {
     }
 
     public ArrayList<StudentDto> getProjectUsers() {
-        MembershipManager membershipManager = redmineManager.getMembershipManager();
-        List<Role> roles;
-        List<Membership> memberships = new ArrayList<>();
-        try {
-            memberships = membershipManager.getMemberships(projectKey);
-        } catch (RedmineException ex) {
-            logger.info(ex.toString());
-        }
+        synchronized (syncObj) {
+            ProjectManager projectManager = redmineManager.getProjectManager();
+            List<Membership> memberships = new ArrayList<>();
+            try {
+                memberships = projectManager.getProjectMembers(projectKey);
+            } catch (RedmineException | IllegalStateException ex) {
+                logger.info(ex.toString());
+            }
 
-        ArrayList<StudentDto> retArray = new ArrayList<>();
-        for (Membership m : memberships) {
-            retArray.add(StudentDto.of(m.getUserId().toString(), m.getUserName()));
-        }
+            ArrayList<StudentDto> retArray = new ArrayList<>();
+            for (Membership m : memberships) {
+                retArray.add(StudentDto.of(m.getUserId().toString(), m.getUserName()));
+            }
 
-        return retArray;
+            return retArray;
+        }
     }
 
-    public ArrayList<String> getIterationFreeTasks(String iteration) {
-        List<Issue> issues = new ArrayList<>();
-        try {
-            issues = getOpenedIssues(iteration);
-        } catch (RedmineException ex) {
-            logger.info(ex.toString());
-        }
-        ArrayList<String> retVal = new ArrayList<>();
-        for (Issue issue : issues) {
-            String assigneeName = issue.getAssigneeName();
-            if (assigneeName == null || assigneeName.equalsIgnoreCase("")) {
-                retVal.add(issue.getId() + ": " + issue.getSubject());
+    public ArrayList<IssueDto> getIterationFreeTasks(String iteration) {
+        synchronized (syncObj) {
+            List<Issue> issues = new ArrayList<>();
+            try {
+                issues = getOpenedIssues(iteration);
+            } catch (RedmineException ex) {
+                logger.info(ex.toString());
             }
+            ArrayList<IssueDto> retVal = new ArrayList<>();
+            for (Issue issue : issues) {
+                String assigneeName = issue.getAssigneeName();
+                if (assigneeName == null || assigneeName.equalsIgnoreCase("")) {
+                    retVal.add(IssueDto.of(issue.getId().toString(), issue.getSubject()));
+                }
+            }
+            return retVal;
         }
-        return retVal;
     }
 
     public void copyAndAssignIssue(int issueId, String nameTo) {

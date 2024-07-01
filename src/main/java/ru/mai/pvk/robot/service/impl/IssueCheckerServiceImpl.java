@@ -21,6 +21,7 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
     private final RobotProperties robotProperties;
     private final ConnectionWithRedmine connection;
     private final UserService userService;
+    private String apikey;
 
     @Override
     public void startSingleIssueCheck(IssueCheckerDto settings) {
@@ -34,30 +35,25 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
 
     @Override
     public StudentListDto getStudentsList(String projectId) {
-        User user = userService.getCurrentUser();
         StudentListDto students = StudentListDto.of(new ArrayList<>());
-        try {
-            connection.init(robotProperties.getUrl(), user.getRedmineApiKey(), projectId);
-        } catch (RedmineException e) {
-            throw new RuntimeException(e);
-        }
-
+        apikey = userService.getCurrentUser().getRedmineApiKey();
+        initConnection(projectId, apikey);
         students.getStudentList().addAll(connection.getProjectUsers());
 
         return students;
     }
 
+
     @Override
     public IssueListDto getTasksList(String projectId, String iterationId) {
-        IssueListDto tasks = IssueListDto.of(new ArrayList<>());
-        tasks.getIssueList().add(
-                IssueDto.of("12345", "Шашки"));
-        tasks.getIssueList().add(
-                IssueDto.of("12346", "МКАД"));
-        tasks.getIssueList().add(
-                IssueDto.of("12347", "Последнее слово"));
+        apikey = userService.getCurrentUser().getRedmineApiKey();
+        initConnection(projectId, apikey);
+        List<IssueDto> tasksToAdd = connection.getIterationFreeTasks(iterationId);
+        IssueListDto allTasks = IssueListDto.of(new ArrayList<>());
 
-        return tasks;
+        allTasks.getIssueList().addAll(tasksToAdd);
+
+        return allTasks;
     }
 
     @Override
@@ -96,5 +92,15 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
 
     private String wrapToRed(String str) {
         return "<span><font color=\"red\">" + str + "</font></span>";
+    }
+
+    private void initConnection(String projectId, String apikey) {
+        if (!connection.isInitialized()) {
+            try {
+                connection.init(robotProperties.getUrl(), apikey, projectId);
+            } catch (RedmineException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

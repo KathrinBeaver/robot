@@ -1,9 +1,14 @@
 package ru.mai.pvk.robot.service.impl;
 
+import com.taskadapter.redmineapi.RedmineException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mai.pvk.robot.model.dto.ProjectDto;
 import ru.mai.pvk.robot.model.dto.ProjectIterationsDto;
+import ru.mai.pvk.robot.property.RobotProperties;
+import ru.mai.pvk.robot.redmine.ConnectionWithRedmine;
+import ru.mai.pvk.robot.securingweb.security.domain.model.User;
+import ru.mai.pvk.robot.securingweb.security.service.UserService;
 import ru.mai.pvk.robot.service.ProjectService;
 
 import java.util.ArrayList;
@@ -12,6 +17,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
+    private final RobotProperties robotProperties;
+    private final ConnectionWithRedmine connection;
+    private final UserService userService;
 
     private final List<ProjectDto> projectList = new ArrayList<>();
 
@@ -42,10 +50,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectIterationsDto getProjectIterations(String projectId) {
-        List<String> iterations = new ArrayList<>();
-        iterations.add("Арифметика");
-        iterations.add("Простые циклы");
-        iterations.add("Рекурсия");
+        User user = userService.getCurrentUser();
+        if (!connection.isInitialized()) {
+            try {
+                connection.init(robotProperties.getUrl(), user.getRedmineApiKey(), projectId);
+            } catch (RedmineException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        List<String> iterations = connection.getVersions(projectId).stream().toList();
 
         ProjectIterationsDto result = ProjectIterationsDto.of(
                 projectId,
