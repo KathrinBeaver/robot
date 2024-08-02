@@ -58,7 +58,14 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
 
     @Override
     public void assignTasksToStudents(TaskAndStudentListDto tasksAndStudents) {
+        apikey = userService.getCurrentUser().getRedmineApiKey();
+        initConnection(apikey);
 
+        for(IssueDto issue: tasksAndStudents.getTasksList()) {
+            for(StudentDto student: tasksAndStudents.getStudentList()) {
+                connection.copyAndAssignIssue(Integer.parseInt(issue.getIssueId()), student.getStudentName());
+            }
+        }
     }
 
     @Override
@@ -92,6 +99,10 @@ public class IssueCheckerServiceImpl implements IssueCheckerService {
 
     private String wrapToRed(String str) {
         return "<span><font color=\"red\">" + str + "</font></span>";
+    }
+
+    private void initConnection(String apikey) {
+        initConnection(null, apikey);
     }
 
     private void initConnection(String projectId, String apikey) {

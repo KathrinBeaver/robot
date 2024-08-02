@@ -93,6 +93,7 @@ public class ConnectionWithRedmine {
     private List<Version> versions;
     private boolean isInited;
     private final Object syncObj = new Object();
+    private RedmineAlternativeReader redmineManagerMine;
 
     public ConnectionWithRedmine() {
 
@@ -100,7 +101,6 @@ public class ConnectionWithRedmine {
 
     public void init(String url, String apikey, String projectId) throws RedmineException {
         this.url = url;
-        this.projectKey = projectId;
         this.apiAccessKey = apikey;
 
         this.redmineManager = RedmineManagerFactory.createWithApiKey(url, apiAccessKey);
@@ -109,7 +109,13 @@ public class ConnectionWithRedmine {
         this.projectManager = redmineManager.getProjectManager();
         this.userManager = redmineManager.getUserManager();
 
-        getProjectDetails(projectKey);
+        redmineManagerMine = new RedmineAlternativeReader(url, this.apiAccessKey);
+
+        if (!TextUtils.isNullOrEmpty(projectId)) {
+            this.projectKey = projectId;
+            getProjectDetails(projectKey);
+        }
+
         isInited = true;
     }
 
@@ -648,7 +654,7 @@ public class ConnectionWithRedmine {
             List<Issue> issues = new ArrayList<>();
             try {
                 issues = getOpenedIssues(iteration);
-            } catch (RedmineException ex) {
+            } catch (RedmineException | NullPointerException ex) {
                 logger.info(ex.toString());
             }
             ArrayList<IssueDto> retVal = new ArrayList<>();
@@ -669,38 +675,47 @@ public class ConnectionWithRedmine {
         } catch (RedmineException ex) {
             logger.error(ex.toString());
         }
-        Issue newIssue = new Issue();
+        Issue newIssue = new Issue(redmineManager.getTransport(), currIssue.getProjectId());
         newIssue.setSubject(currIssue.getSubject());
         newIssue.setTargetVersion(currIssue.getTargetVersion());
         newIssue.setCategory(currIssue.getCategory());
-        newIssue.setProjectId(currIssue.getProjectId());
         newIssue.setPrivateIssue(true);
         newIssue.setAssigneeName(nameTo);
         newIssue.setDescription(currIssue.getDescription());
         setIssueAssigneeNameForIssue(newIssue, nameTo);
-
+        Issue created = null;
         try {
-            redmineManager.getIssueManager().createIssue(newIssue);
-        } catch (RedmineException ex) {
+            created = newIssue.create();
+        } catch (RedmineException | NullPointerException ex) {
             logger.info(ex.toString());
+        }
+
+        if (created == null){
+            redmineManagerMine.createIssue(newIssue);
         }
     }
 
     public void createNewIssueToRedmine(TaskInfo task) {
+        Issue created = null;
+        Issue newIssue = new Issue();
+        newIssue.setSubject(task.getTaskName());
+        newIssue.setTargetVersion(versions.stream()
+                .filter(v -> v.getName().equals(task.getIterationPath()))
+                .findFirst().get());
+        newIssue.setPrivateIssue(true);
+        newIssue.setAssigneeName("");
+        newIssue.setDescription(task.getTaskBody());
+
         try {
-            Issue newIssue = new Issue();
-            newIssue.setSubject(task.getTaskName());
-            newIssue.setTargetVersion(versions.stream()
-                    .filter(v -> v.getName().equals(task.getIterationPath()))
-                    .findFirst().get());
-            //newIssue.setCategory(issueManager.getCategories().stream().findFirst());
             newIssue.setProjectId(projectManager.getProjectByKey(projectKey).getId());
-            newIssue.setPrivateIssue(true);
-            newIssue.setAssigneeName("");
-            newIssue.setDescription(task.getTaskBody());
-            redmineManager.getIssueManager().createIssue(newIssue);
+            newIssue.setCategory(issueManager.getCategories(newIssue.getProjectId()).stream().findFirst().get());
+            created = redmineManager.getIssueManager().createIssue(newIssue);
         } catch (RedmineException ex) {
             logger.info(ex.getMessage());
+        }
+
+        if (created == null){
+            redmineManagerMine.createIssue(newIssue);
         }
     }
 
@@ -822,6 +837,10 @@ public class ConnectionWithRedmine {
     }
 
     private int getUserId(String userName) {
+        if (projectsUsers == null) {
+            return 26945; // Костыль, id пользователя "Sergey Politsyn"
+        }
+
         for (Membership user : projectsUsers) {
             if (user.getUserName().equalsIgnoreCase(userName)) {
                 return user.getUserId();
